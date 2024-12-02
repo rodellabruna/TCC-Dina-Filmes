@@ -48,8 +48,8 @@ export class NavbarComponent implements OnInit {
     }
     this.authService.checkLocalStorageForUser();
   }
-
  
+
   buscarFilme(event: Event) {
     const inputElement = event.target as HTMLInputElement; // Faz o cast para HTMLInputElement
   const search = inputElement?.value || ''; // Se o valor for null ou undefined, usa uma string vazia

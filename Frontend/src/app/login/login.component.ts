@@ -21,6 +21,7 @@ export class LoginComponent  {
 
   fazerLogin() {
     console.log('Login attempted with:', this.obj);
+  
     try {
       this.authService.login(this.obj.email, this.obj.senhaAtual).subscribe(
         (retorno: Usuario) => {
@@ -49,7 +50,16 @@ export class LoginComponent  {
         },
         (error) => {
           // Lidando com erros no servidor
-          this.mensagem = 'Erro ao fazer login. Tente novamente mais tarde.';
+          if (error.status === 403) {
+            // Email não validado
+            this.mensagem = 'Por favor, valide seu email para ativar sua conta.';
+          } else if (error.status === 401) {
+            // Email ou senha inválidos
+            this.mensagem = 'Email ou senha inválidos!';
+          } else {
+            // Outros erros
+            this.mensagem = 'Erro ao fazer login. Tente novamente mais tarde.';
+          }
           this.showError = true;
           this.authService.setAuthentication(false);
         }
@@ -59,6 +69,7 @@ export class LoginComponent  {
       this.authService.setAuthentication(false);
     }
   }
+  
   
   limparFormulario(): void {
     this.obj.email = '';
